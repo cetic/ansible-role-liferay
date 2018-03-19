@@ -9,7 +9,7 @@
   when: mysqlconnector_downloaded|changed
 
 - name: Install mysql-java-connector
-  shell: 'mv /tmp/mysql-connector-java-{{ mysql_connector_version }}/mysql-connector-java-{{ mysql_connector_version }}-bin.jar {{ tomcat_dir }}/lib/ && chown {{ alfresco_user }}:{{ alfresco_group }} {{ tomcat_dir }}/lib/mysql-connector-java-{{ mysql_connector_version }}-bin.jar'
+  shell: 'mv /tmp/mysql-connector-java-{{ mysql_connector_version }}/mysql-connector-java-{{ mysql_connector_version }}-bin.jar {{ tomcat_dir }}/lib/ && chown {{ liferay_user }}:{{ liferay_group }} {{ tomcat_dir }}/lib/mysql-connector-java-{{ mysql_connector_version }}-bin.jar'
   when: mysqlconnector_extracted|changed
 
 - name: Cleanup mysql-java-connector
