@@ -22,9 +22,9 @@ mysql_bind_address: '0.0.0.0'
 ip_mysql: '10.0.0.9'
 
 liferay_port: '8080'
-liferay_db_user: 'liferayFO'
-liferay_db_password: 'liferayFO'
-liferay_default_database_url: "jdbc:mysql://{{ ip_mysql }}/liferayFO?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+liferay_db_user: 'liferay'
+liferay_db_password: 'liferay'
+liferay_default_database_url: "jdbc:mysql://{{ ip_mysql }}/liferay?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
 
 # Liferay archive to be installed. If the file in `local` exists it will be used. 
 liferay_archive_url: 'http://sourceforge.net/projects/lportal/files/Liferay%20Portal/6.2.3%20GA4/liferay-portal-tomcat-6.2-ce-ga4-20150416163831865.zip'
