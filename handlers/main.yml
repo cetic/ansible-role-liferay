@@ -1,0 +1,4 @@
+---
+- name: restart liferay
+  listen: restart liferay
+  shell: service liferay restart

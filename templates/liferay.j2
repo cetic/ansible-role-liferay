@@ -1,0 +1,14 @@
+#!/bin/sh -e
+
+LIFERAY_SCRIPT="{{ liferay_home }}/liferay.sh"
+
+if [ "$1" = "start" ]; then
+ su - {{ liferay_user }} "${LIFERAY_SCRIPT}" "start"
+elif [ "$1" = "stop" ]; then
+ su - {{ liferay_user }} "${LIFERAY_SCRIPT}" "stop"
+elif [ "$1" = "restart" ]; then
+ su - {{ liferay_user }} "${LIFERAY_SCRIPT}" "stop"
+ su - {{ liferay_user }} "${LIFERAY_SCRIPT}" "start"
+else
+ echo "Usage: /etc/init.d/liferay [start|stop|restart]"
+fi

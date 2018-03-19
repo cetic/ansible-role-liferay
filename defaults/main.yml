@@ -1,0 +1,60 @@
+---
+### Specific variable related to the alfresco host are defined here.
+
+## geerlingguy java
+java_home: '/lib/jvm/jre-1.8.0-openjdk'
+
+# tomcat
+java_opts: '-Xms512m -Xmx1024m -Xss768k -XX:NewSize=256m -server'
+tomcat_dir: '{{ liferay_home }}/tomcat-{{ liferay_bundle_tomcat_version }}'
+tomcat_port_ajp: '8009'
+tomcat_port_https: '8443'
+tomcat_port_shutdown: '8005'
+
+# mysql-java-connector
+setup_mysql_java_connector: true
+mysql_connector_version: '5.1.35'
+
+# mysql
+mysql_root_db_pass: 'root'
+mysql_port: '3306'
+mysql_bind_address: '0.0.0.0'
+ip_mysql: '10.0.0.9'
+
+liferay_port: '8080'
+liferay_db_user: 'liferayFO'
+liferay_db_password: 'liferayFO'
+liferay_default_database_url: "jdbc:mysql://{{ ip_mysql }}/liferayFO?useUnicode=true&characterEncoding=UTF-8&useFastDateParsing=false"
+
+# Liferay archive to be installed. If the file in `local` exists it will be used. 
+liferay_archive_url: 'http://sourceforge.net/projects/lportal/files/Liferay%20Portal/6.2.3%20GA4/liferay-portal-tomcat-6.2-ce-ga4-20150416163831865.zip'
+liferay_version: '6.2.ce'
+liferay_bundle_base_dir_name: 'liferay-portal-6.2-ce-ga4'
+
+# The folder on the server whe the Liferay bundle will be unpacked
+liferay_unpack_folder: '/opt'
+
+# Liferay's home folder.
+liferay_home: '/opt/liferay'
+
+# The operating system user and group that will be used to run Liferay
+liferay_user: 'liferay'
+liferay_group: 'liferay'
+
+# A folder where files from Liferay's document library will be stored.
+liferay_dl_folder: '{{ liferay_home }}/data/document_library/'
+
+# The version of the Tomcat that is bundled in the current Liferay Portal server installation
+liferay_bundle_tomcat_version: '7.0.42'
+liferay_tomcat_dir: '{{ liferay_home }}/tomcat-{{ liferay_bundle_tomcat_version }}'
+
+liferay_autodeploy_dir: '{{liferay_home}}/deploy'
+liferay_enable_remote_debug: false
+
+liferay_cluster_autodetect: google.com:80
+
+# db
+liferay_db_host: '127.0.0.1'
+liferay_default_database_driver : 'com.mysql.jdbc.Driver'
+# Additional databases to be added to Liferay's configuration
+liferay_additional_databases: []
