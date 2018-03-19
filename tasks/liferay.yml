@@ -18,7 +18,7 @@
   group: name={{ liferay_group }} state=present
 
 - name: Make sure Liferay system user exists
-  user: name={{ liferay_user }} group={{ liferay_os_group }}
+  user: name={{ liferay_user }} group={{ liferay_group }}
   
 - name: enable read access for maintainance users
   tags: liferay
