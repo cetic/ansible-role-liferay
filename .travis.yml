@@ -20,7 +20,7 @@ script:
   - tests/test.sh
 
  # Make sure Liferay is running.
-  - 'docker exec --tty ${container_id} env TERM=xterm curl http://localhost:$http_port/$prefix'
+ # - 'docker exec --tty ${container_id} env TERM=xterm curl http://localhost:$http_port/$prefix'
 
 after_failure:
   # Check what happened on systemd systems.   
