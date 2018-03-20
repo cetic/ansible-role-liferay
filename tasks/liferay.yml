@@ -93,4 +93,3 @@
   wait_for:
     port: "{{ liferay_port }}"
     delay: 15
-  notify: restart liferay

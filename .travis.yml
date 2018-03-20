@@ -19,7 +19,7 @@ script:
   # Run tests.
   - tests/test.sh
 
- # Make sure Alfresco is running.
+ # Make sure Liferay is running.
   - 'docker exec --tty ${container_id} env TERM=xterm curl http://localhost:$http_port/$prefix'
 
 after_failure:
