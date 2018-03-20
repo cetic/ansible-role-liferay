@@ -93,15 +93,3 @@
   wait_for:
     port: "{{ liferay_port }}"
     delay: 15
-    
-- name: wait for liferay log
-  wait_for:
-    path: '{{ liferay_tomcat_dir }}/logs/catalina.out'
-    state: present
-
-- name: wait for liferay startup
-  shell: 'grep "Server startup in" {{ liferay_tomcat_dir }}/logs/catalina.out'
-  register: cmd_result
-  retries: 1000
-  delay: 5
-  until: cmd_result | success
