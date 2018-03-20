@@ -1,0 +1,26 @@
+#!/bin/sh -e
+
+# Start or stop Liferay server
+
+# Set the following to where Tomcat is installed
+LIF_HOME={{ liferay_home }}
+cd "$LIF_HOME"
+APPSERVER="${LIF_HOME}/tomcat-{{ liferay_bundle_tomcat_version }}"
+export CATALINA_HOME="$APPSERVER"
+
+# Set any default JVM values
+export JAVA_OPTS='{{ java_opts }}'
+export JAVA_OPTS="${JAVA_OPTS} -Dliferay.home=${ALF_HOME} -Dcom.sun.management.jmxremote"
+export JAVA_HOME={{ java_home }}
+export CATALINA_HOME={{ liferay_tomcat_dir }}
+export CATALINA_BASE={{ liferay_tomcat_dir }}
+{% if liferay_enable_remote_debug %}
+export CATALINA_OPTS="-agentlib:jdwp=transport=dt_socket,address={{ liferay_port }},server=y,suspend=n"
+{% endif %}
+
+if [ "$1" = "start" ]; then
+ "${APPSERVER}/bin/startup.sh"
+elif [ "$1" = "stop" ]; then
+ "${APPSERVER}/bin/shutdown.sh"
+ killall -u liferay java
+fi

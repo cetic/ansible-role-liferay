@@ -1,0 +1,24 @@
+---
+- name: clean previous logs
+  listen: restart liferay
+  file:
+    state: absent
+    path: '{{ liferay_tomcat_dir }}/logs/catalina.out'
+
+- name: restart alfresco server
+  listen: restart liferay
+  shell: service liferay restart
+
+- name: wait for liferay log
+  listen: restart liferay
+  wait_for:
+    path: '{{ liferay_tomcat_dir }}/logs/catalina.out'
+    state: present
+
+- name: wait for liferay startup
+  listen: restart liferay
+  shell: 'grep "Server startup in" {{ liferay_tomcat_dir }}/logs/catalina.out'
+  register: cmd_result
+  retries: 1000
+  delay: 5
+  until: cmd_result | success

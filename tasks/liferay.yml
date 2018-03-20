@@ -1,0 +1,107 @@
+---
+- name: Download Liferay community
+  shell: 'wget {{liferay_archive_url}} -O /tmp/liferay-{{ liferay_version }}.zip creates=/tmp/liferay-{{ liferay_version }}.zip'
+  register: liferay_downloaded
+  
+- name: Get the Liferay main folder from the archive
+  command: unzip -v /tmp/liferay-{{ liferay_version }}.zip | grep -P "^[^\/]*/$" | grep -P "[^\s]*$" -o | grep -P '[^/]*' -o
+  register: liferay_folder_from_zip
+  changed_when: false
+  
+- name: Copy and unpack Liferay archive
+  unarchive:
+    src: "/tmp/liferay-{{ liferay_version }}.zip"
+    dest: "{{ liferay_unpack_folder }}"
+    remote_src: yes
+
+- name: Make sure Liferay system group exists
+  group: name={{ liferay_group }} state=present
+
+- name: Make sure Liferay system user exists
+  user: name={{ liferay_user }} group={{ liferay_group }}
+  
+- name: enable read access for maintainance users
+  tags: liferay
+  command: usermod -a -G {{liferay_group}} {{item}}
+  with_items: liferay_system_users_access
+  ignore_errors: yes
+  when: liferay_system_users_access is defined
+
+- name: Check if Liferay directory exists ant delete it.
+  shell: rm -R -f {{ liferay_home }}
+  
+- name: Apply Liferay home
+  tags: liferay
+  when:
+    - liferay_bundle_base_dir_name is defined
+    - liferay_bundle_base_dir_name not in (None, "")
+    - liferay_bundle_base_dir_name != liferay_home
+  command: mv -f {{ liferay_unpack_folder }}/{{ liferay_bundle_base_dir_name }} {{liferay_home}}
+  
+- name: copy portal properties
+  template:
+    src=portal-ext.properties.j2
+    dest={{liferay_home}}/portal-ext.properties
+    owner={{liferay_user}}
+    group={{liferay_group}}
+    mode=644
+
+- name: set service script mode
+  file:
+    state=file
+    path={{liferay_home}}/tomcat-{{ liferay_bundle_tomcat_version }}/bin/catalina.sh
+    owner={{liferay_user}}
+    group={{liferay_group}}
+    mode=0755
+    
+- name: set port {{ liferay_port }}
+  template:
+    src=server.xml.j2
+    dest={{liferay_home}}/tomcat-{{ liferay_bundle_tomcat_version }}/conf/server.xml
+    owner={{liferay_user}}
+    group={{liferay_group}}
+    mode=0755
+    
+- name: copy service script wrapper
+  template:
+    src=liferay.j2
+    dest=/etc/init.d/liferay
+    owner=root 
+    group=root
+    mode=0755
+    
+- name: Install liferay startup script
+  template: 
+    src=liferay.sh.j2
+    dest={{liferay_home}}/liferay.sh 
+    owner={{liferay_user}}
+    group={{liferay_group}}
+    mode=0755
+    backup=yes
+    
+- name: Set liferay file owner
+  shell: chown -R {{ liferay_user }}:{{ liferay_group }} {{ liferay_home }} && chown -R {{ liferay_user }}:{{ liferay_group }} {{ liferay_home }}/tomcat-{{ liferay_bundle_tomcat_version }}/
+
+# Install Mysql-java-Connector
+- include: mysql-java-connector.yml
+  when: setup_mysql_java_connector
+  
+- name: Start liferay server
+  shell: service liferay start
+
+- name: Wait 300 seconds for port {{ liferay_port }} to become open on the host, don't start checking for 15 seconds
+  wait_for:
+    port: "{{ liferay_port }}"
+    delay: 15
+    
+- name: wait for liferay log
+  wait_for:
+    path: '{{ liferay_tomcat_dir }}/logs/catalina.out'
+    state: present
+
+- name: wait for liferay startup
+  shell: 'grep "Server startup in" {{ liferay_tomcat_dir }}/logs/catalina.out'
+  register: cmd_result
+  retries: 1000
+  delay: 5
+  until: cmd_result | success
