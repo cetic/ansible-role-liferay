@@ -29,4 +29,5 @@ after_failure:
   - 'docker exec --tty ${container_id} env TERM=xterm journalctl -xe --no-pager'
 
 #instruct Travis to notify Galaxy when a build completes:
-webhooks: https://galaxy.ansible.com/api/v1/notifications/
+notifications:
+  webhooks: https://galaxy.ansible.com/api/v1/notifications/
