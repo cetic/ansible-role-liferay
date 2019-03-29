@@ -85,6 +85,10 @@
 # Install Mysql-java-Connector
 - include: mysql-java-connector.yml
   when: setup_mysql_java_connector
+
+- name: force systemd to reread configs
+  systemd:
+    daemon_reload: yes
   
 - name: Start liferay server
   service:
