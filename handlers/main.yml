@@ -5,10 +5,13 @@
     state: absent
     path: '{{ liferay_tomcat_dir }}/logs/catalina.out'
 
-- name: restart alfresco server
+- name: Start liferay server
   listen: restart liferay
-  shell: service liferay restart
-
+  service:
+    name: liferay
+    state: restarted
+    use: service
+  
 - name: wait for liferay log
   listen: restart liferay
   wait_for:

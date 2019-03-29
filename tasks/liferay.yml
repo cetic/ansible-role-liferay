@@ -85,9 +85,16 @@
 # Install Mysql-java-Connector
 - include: mysql-java-connector.yml
   when: setup_mysql_java_connector
+
+- name: force systemd to reread configs
+  systemd:
+    daemon_reload: yes
   
 - name: Start liferay server
-  shell: service liferay start
+  service:
+    name: liferay
+    state: started
+    use: service
 
 - name: Wait 300 seconds for port {{ liferay_port }} to become open on the host, don't start checking for 15 seconds
   wait_for:

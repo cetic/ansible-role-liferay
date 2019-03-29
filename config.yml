@@ -1,0 +1,14 @@
+---
+configs:
+  liferay:
+    ip: '10.0.0.9'
+    box: 'geerlingguy/centos7'
+    cpu: '1'
+    ram: '1024'
+    hostname: 'liferay'
+  controller:
+    ip: '10.0.0.20'
+    box: 'geerlingguy/centos7'
+    cpu: '1'
+    ram: '1024'
+    hostname: 'controller'

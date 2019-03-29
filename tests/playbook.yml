@@ -1,0 +1,19 @@
+---
+# Install Liferay
+- hosts: liferay
+  vars:
+    mysql_databases:
+      - name: liferay
+    mysql_users:
+      - name: liferay
+        password: liferay
+        priv: "liferay.*:ALL"
+  become: true
+  roles:
+    - role: geerlingguy.java
+      when: "ansible_os_family == 'RedHat'"
+      java_packages:
+        - java-1.8.0-openjdk
+    - role: geerlingguy.mysql
+    - role: '../../vagrant'
+    #role in test: liferay

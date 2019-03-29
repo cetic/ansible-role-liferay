@@ -69,11 +69,32 @@ Liferay database informations.
 
 ```yaml
 - hosts: liferay
+  vars:
+    mysql_databases:
+      - name: liferay
+    mysql_users:
+      - name: liferay
+        password: liferay
+        priv: "liferay.*:ALL"
+  become: true
   roles:
     - role: geerlingguy.java
+      when: "ansible_os_family == 'RedHat'"
+      java_packages:
+        - java-1.8.0-openjdk
+    - role: geerlingguy.mysql
     - role: cetic.liferay
-      become: true
 ```
+
+## Tests
+
+### testing locally with [Vagrant](https://www.vagrantup.com/)
+
+You can test this ansible role by using `vagrant`. See the Vagrantfile.
+
+### testing with Travis
+
+See the playbook used for Travis CI tests (tests/test.yml).
 
 ## Future improvements
 
