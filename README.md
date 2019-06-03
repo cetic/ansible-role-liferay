@@ -1,6 +1,6 @@
 # Ansible Role: Liferay
 
-[![Build Status](https://travis-ci.org/cetic/ansible-role-alfresco.svg?branch=master)](https://travis-ci.org/cetic/ansible-role-liferay)
+[![Build Status](https://travis-ci.org/cetic/ansible-role-liferay.svg?branch=master)](https://travis-ci.org/cetic/ansible-role-liferay)
 [![Ansible Galaxy](https://img.shields.io/badge/galaxy-_cetic.liferay-blue.svg)](https://galaxy.ansible.com/cetic/liferay/)
 
 Installs Liferay on RHEL/CentOS servers with [ansible](http://www.ansible.com/home).
